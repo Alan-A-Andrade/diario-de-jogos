@@ -1,0 +1,8 @@
+.gameDetails {
+  display: flex;
+  background-color: #1c202b;
+  position: relative;
+  transition: 0.4s;
+  width: clamp(30vw, 45vw, 50vw);
+  height: 100vh;
+}
