@@ -39,46 +39,47 @@ const testArray: game[] = [
 ];
 
 const FrontPage: React.FC = () => {
-  const [modalState, setModalState] = useState({
-    gameId: 0,
-    isModalOpen: false,
-  });
+  interface GameThumbnail {
+    [key: string]: ThumbnailProps;
+  }
+
+  const [modalState, setModalState] = useState<GameThumbnail>({});
+
+  useEffect(() => {
+    const newState = testArray.reduce((acc: GameThumbnail, game: game, idx) => {
+      const { title, imageURL } = game;
+      return {
+        ...acc,
+        [idx]: { ...acc[idx], title, imageURL, position: idx, isFocus: false },
+      };
+    }, {});
+
+    setModalState(newState);
+  }, []);
 
   const memoArray = useMemo(() => {
     return testArray.map((game, idx) => {
+      if (!modalState[idx]) {
+        return "";
+      }
       return (
-        <div key={`game_${idx + 1}`} onClick={() => handleModal(idx + 1)}>
-          <Thumbnail
-            {...game}
-            position={idx}
-            isFocus={modalState.gameId === idx + 1 && modalState.isModalOpen}
-          />
+        <div
+          key={`game_${idx}`}
+          data-grid={{ x: idx, y: 1, w: 1, h: 1 }}
+          onClick={() => handleModal(idx)}
+        >
+          <Thumbnail {...modalState[idx]} />
         </div>
       );
     });
-  }, [modalState.gameId]);
+  }, [modalState]);
 
   //https://strml.github.io/react-grid-layout/examples/6-dynamic-add-remove.html
   //check link above, trying to change this page to a memo one, try to reacte a "pseudo state store in this component"
 
-  const handleModal = (gameId: number) => {
-    if (!modalState.isModalOpen) {
-      setModalState({ gameId, isModalOpen: true });
-      return;
-    } else {
-      if (gameId === modalState.gameId || modalState.gameId === 0) {
-        setModalState({
-          isModalOpen: false,
-          gameId: 0,
-        });
-        return;
-      }
-      if (gameId !== modalState.gameId && modalState.gameId !== 0) {
-        setModalState({ ...modalState, gameId });
-        return;
-      }
-    }
-  };
+  const handleModal = (gameId: number) => {};
+
+  console.log(memoArray);
 
   return (
     <div className="frontpage">
@@ -91,25 +92,15 @@ const FrontPage: React.FC = () => {
       >
         <GameDetails gameId={modalState.gameId} />
       </div> */}
-      <div
-        className={
-          modalState.isModalOpen ? "frontpage_list" : "frontpage_list_modal"
-        }
+      <GridLayout
+        className="layout"
+        margin={[25, 25]}
+        cols={3}
+        rowHeight={280}
+        width={(280 + 25) * 3}
       >
-        {testArray.map((game, idx) => {
-          return (
-            <div key={`game_${idx + 1}`} onClick={() => handleModal(idx + 1)}>
-              <Thumbnail
-                {...game}
-                position={idx}
-                isFocus={
-                  modalState.gameId === idx + 1 && modalState.isModalOpen
-                }
-              />
-            </div>
-          );
-        })}
-      </div>
+        {memoArray.map((el) => el)}
+      </GridLayout>
     </div>
   );
 };
