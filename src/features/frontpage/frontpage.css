@@ -4,7 +4,7 @@
 }
 
 .frontpage_list {
-  width: 50vw;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   gap: 1.2em;
@@ -25,22 +25,4 @@
   transition: 0.4s;
   transition-timing-function: ease-in-out;
   padding-bottom: 2em;
-}
-
-.frontpage_modal_open {
-  position: fixed;
-  right: 0;
-  top: 0;
-  transition: 0.4s;
-  transition-timing-function: ease-in-out;
-  z-index: 100;
-}
-
-.frontpage_modal_close {
-  position: fixed;
-  right: -100%;
-  top: 0em;
-  transition: 0.4s;
-  transition-timing-function: ease-in-out;
-  z-index: 100;
 }
