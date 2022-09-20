@@ -1,0 +1,20 @@
+.grid {
+  width: 100%;
+  height: 100%;
+  padding: 2em;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  align-items: center;
+  justify-content: center;
+}
+
+.grid_item {
+  width: calc(clamp(10vw, 25vw, 20vw));
+}
+
+@media only screen and (max-width: 600px) {
+  .grid_item {
+    width: 90vw;
+  }
+}
