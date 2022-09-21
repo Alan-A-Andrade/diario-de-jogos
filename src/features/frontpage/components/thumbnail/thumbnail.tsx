@@ -1,5 +1,10 @@
 import React from "react";
-import "./thumbnail.css";
+import {
+  ThumbnailStyled,
+  ThumbNailTitleStyled,
+  ThumbnailDropStyled,
+  ThumbnailPictureStyled,
+} from "./thumbnail.style";
 
 export type ThumbnailProps = {
   title: string;
@@ -33,46 +38,22 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
     return number % 2 === 0;
   };
 
-  if (isFocus) {
-    return (
-      <div className="focus_thumbnail">
-        <div className={`focus_thumbnail_drop`}>
-          <img
-            className={`focus_thumbnail_shadow`}
-            src={imageURL}
-            alt={"shadow"}
-          />
-          <div className={`focus_thumbnail_color_${isEven(position)}`}></div>
-        </div>
-        <div className="focus_thumbnail_title">
-          <h1 className="focus_thumbnail_h1">{title}</h1>
-          <h1 className="focus_thumbnail_highlight">{highlight(title)}</h1>
-        </div>
-        <img
-          className="focus_thumbnail_picture"
-          src={imageURL}
-          alt={`${title}'s picture`}
-        />
-      </div>
-    );
-  }
-
   return (
-    <div className="thumbnail">
-      <div className={`thumbnail_drop`}>
-        <img className={`thumbnail_shadow`} src={imageURL} alt={"shadow"} />
-        <div className={`thumbnail_color_${isEven(position)}`}></div>
-      </div>
-      <div className="thumbnail_title">
-        <h1 className="thumbnail_h1">{title}</h1>
-        <h1 className="thumbnail_highlight">{highlight(title)}</h1>
-      </div>
-      <img
-        className="thumbnail_picture"
+    <ThumbnailStyled isFocus={isFocus}>
+      <ThumbnailDropStyled aria-hidden="true" isFocus={isFocus}>
+        <img src={imageURL} alt={"shadow"} />
+        <div></div>
+      </ThumbnailDropStyled>
+      <ThumbNailTitleStyled isFocus={isFocus}>
+        <h1>{title}</h1>
+        <h1 aria-hidden="true">{highlight(title)}</h1>
+      </ThumbNailTitleStyled>
+      <ThumbnailPictureStyled
+        isFocus={isFocus}
         src={imageURL}
         alt={`${title}'s picture`}
       />
-    </div>
+    </ThumbnailStyled>
   );
 };
 export default Thumbnail;

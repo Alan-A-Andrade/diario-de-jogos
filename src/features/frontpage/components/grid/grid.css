@@ -4,17 +4,22 @@
   padding: 2em;
   display: flex;
   flex-wrap: wrap;
-  gap: 1em;
+  gap: 2vw;
   align-items: center;
   justify-content: center;
 }
 
 .grid_item {
-  width: calc(clamp(10vw, 25vw, 20vw));
+  width: calc(clamp(10vw, 15vw, 20vw));
 }
 
 @media only screen and (max-width: 600px) {
   .grid_item {
-    width: 90vw;
+    width: 95vw;
+  }
+
+  .grid {
+    gap: 2em;
+    padding: 1em;
   }
 }
