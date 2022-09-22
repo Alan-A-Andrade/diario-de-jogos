@@ -1,16 +1,15 @@
 import React, { useEffect, useMemo } from "react";
 import Thumbnail, { ThumbnailProps } from "./components/thumbnail/thumbnail";
-import "./frontpage.css";
-
+import GameDetails from "./components/gameDetails/gameDetails";
 import useAppState from "../../hooks/useContext";
-
 import { testArray } from "../../mockData";
 import Grid from "./components/grid/grid";
+import { FrontPageStyled, FPModal } from "./frontpage.style";
 
 export type game = Omit<ThumbnailProps, "position" | "isFocus">;
 
 const FrontPage: React.FC = () => {
-  const { loadGrid, gridState, handleFocusItem } = useAppState();
+  const { loadGrid, gridState, handleModal, isModalOpen } = useAppState();
 
   useEffect(() => {
     loadGrid(testArray);
@@ -22,21 +21,28 @@ const FrontPage: React.FC = () => {
     return array.map((game, idx) => {
       const { title, imageURL } = game;
       return (
-        <div onClick={() => handleFocusItem(idx)}>
-          <Thumbnail
-            title={title}
-            imageURL={imageURL}
-            isFocus={gridState[idx].isFocus}
-            position={gridState[idx].position}
-          />
-        </div>
+        <Thumbnail
+          title={title}
+          imageURL={imageURL}
+          isFocus={gridState[idx].isFocus}
+          position={gridState[idx].position}
+        />
       );
     });
   };
 
   const memoItems = useMemo(() => generateItems(testArray), [gridState]);
 
-  return <Grid>{memoItems}</Grid>;
+  return (
+    <>
+      <FrontPageStyled>
+        <Grid>{memoItems}</Grid>
+        <FPModal isOpen={isModalOpen}>
+          <GameDetails gameId={0} />
+        </FPModal>
+      </FrontPageStyled>
+    </>
+  );
 };
 
 export default FrontPage;

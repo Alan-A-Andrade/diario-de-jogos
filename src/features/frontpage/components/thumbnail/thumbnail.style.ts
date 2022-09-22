@@ -127,8 +127,7 @@ const ThumbNailTitleStyled = styled.div<ThumbnailStyledProps>`
     }
 
     h1:last-of-type {
-      font-size: 5vw;
-      bottom: 1em;
+      font-size: 6vw;
     }
   }
 `;
