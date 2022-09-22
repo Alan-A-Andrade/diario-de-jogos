@@ -17,13 +17,35 @@ const GridStyled = styled.div<GridStyledProps>`
   }
 `;
 
+const GridButtonStyled = styled.h1<{ isFocused: boolean }>`
+  text-align: center;
+  position: absolute;
+  padding: 0em 0.2em;
+  margin: 0.1em;
+  z-index: 10;
+  font-weight: "bolder";
+  font-size: clamp(0.2rem, 3.5vw, 2rem);
+  transition: "0.2s";
+  text-shadow: 2px 2px #c21f50bf;
+  font-size: 3.5vw;
+  opacity: ${(props) => (props.isFocused ? `100%` : `0%`)};
+  pointer-events: ${(props) => (props.isFocused ? "initial" : `none`)};
+  cursor: default;
+  background-color: #0d1014b3;
+  border-radius: 100%;
+
+  @media only screen and (max-width: 980px) {
+    font-size: 10vw;
+  }
+`;
 export interface GridStyledProps {
   isModalOpen: boolean;
 }
 
 const GridItemStyled = styled.div`
+  display: flex;
+  position: relative;
   width: calc(clamp(10vw, 15vw, 30vw));
-
   @media only screen and (max-width: 980px) {
     width: 35vw;
   }
@@ -59,4 +81,4 @@ const GridDiv = styled.div`
   }
 `;
 
-export { GridItemStyled, GridStyled, GridDiv };
+export { GridItemStyled, GridStyled, GridDiv, GridButtonStyled };

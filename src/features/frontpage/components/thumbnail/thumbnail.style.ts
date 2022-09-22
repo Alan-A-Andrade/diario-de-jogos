@@ -4,21 +4,6 @@ export interface ThumbnailStyledProps {
   isFocus: boolean;
 }
 
-// .focus_thumbnail_highlight {
-//   width: 100%;
-//   position: absolute;
-//   bottom: 0.75em;
-//   left: -0.1em;
-//   color: #c21f50bf;
-//   text-align: center;
-//   opacity: 0.75;
-//   font-size: clamp(0.2rem, 3.5vw, 2rem);
-//   z-index: 5;
-//   transition-timing-function: ease-in-out;
-//   transform: scaleX(1);
-//   transition: 0.4s;
-// }
-
 const ThumbnailStyled = styled.section<ThumbnailStyledProps>`
   display: flex;
   width: 100%;
