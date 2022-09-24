@@ -1,4 +1,5 @@
 import React from "react";
+import useAppState from "../../../../hooks/useContext";
 import {
   ThumbnailStyled,
   ThumbNailTitleStyled,
@@ -18,6 +19,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
   imageURL,
   position,
 }) => {
+  const { isModalOpen } = useAppState();
   const highlight = (text: string) => {
     const number = text.length;
     const titleArray = title.split("");
@@ -27,15 +29,11 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
       if (titleArray[index] === " ") {
         highligh.push(` `);
       } else {
-        highligh.push(`▃`);
+        highligh.push(`▄`);
       }
     }
 
     return highligh.join("");
-  };
-
-  const isEven = (number: number) => {
-    return number % 2 === 0;
   };
 
   return (
@@ -44,7 +42,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
         <img src={imageURL} alt={"shadow"} />
         <div></div>
       </ThumbnailDropStyled>
-      <ThumbNailTitleStyled isFocus={isFocus}>
+      <ThumbNailTitleStyled isModalOpen={isModalOpen} isFocus={isFocus}>
         <h1>{title}</h1>
         <h1 aria-hidden="true">{highlight(title)}</h1>
       </ThumbNailTitleStyled>

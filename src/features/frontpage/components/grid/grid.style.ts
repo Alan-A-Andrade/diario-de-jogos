@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+export interface GridStyledProps {
+  isModalOpen: boolean;
+}
+
 const GridStyled = styled.div<GridStyledProps>`
   width: ${(props) => (props.isModalOpen ? `50%` : `100%`)};
   height: 100%;
@@ -12,6 +16,7 @@ const GridStyled = styled.div<GridStyledProps>`
   transition: width 0.5s;
 
   @media only screen and (max-width: 600px) {
+    width: ${(props) => (props.isModalOpen ? `35%` : `100%`)};
     gap: 2em;
     padding: 1em;
   }
@@ -32,15 +37,11 @@ const GridButtonStyled = styled.h1<{ isFocused: boolean }>`
   pointer-events: ${(props) => (props.isFocused ? "initial" : `none`)};
   cursor: default;
   background-color: #0d1014b3;
-  border-radius: 100%;
 
   @media only screen and (max-width: 980px) {
     font-size: 10vw;
   }
 `;
-export interface GridStyledProps {
-  isModalOpen: boolean;
-}
 
 const GridItemStyled = styled.div`
   display: flex;
@@ -60,6 +61,7 @@ const GridDiv = styled.div`
   width: 100%;
   align-items: center;
   padding: 0 2.5vw;
+  justify-content: space-between;
 
   h1 {
     font-weight: normal;
@@ -71,13 +73,21 @@ const GridDiv = styled.div`
     transition-timing-function: ease-in-out;
     text-align: center;
     text-shadow: 2px 2px #c21f50bf;
+    margin: 0 0.4em 0 0.4em;
   }
 
   div {
-    width: 100%;
+    width: 80%;
     height: 0.2em;
     background-color: white;
     opacity: 0.2;
+    position: relative;
+  }
+
+  @media only screen and (max-width: 980px) {
+    h1 {
+      font-size: 6vw;
+    }
   }
 `;
 

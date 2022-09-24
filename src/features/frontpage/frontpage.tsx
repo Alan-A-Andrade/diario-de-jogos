@@ -1,42 +1,57 @@
-import React, { useEffect, useMemo } from "react";
-import Thumbnail, { ThumbnailProps } from "./components/thumbnail/thumbnail";
+import React, { useEffect, useState } from "react";
 import GameDetails from "./components/gameDetails/gameDetails";
 import useAppState from "../../hooks/useContext";
-import { testArray } from "../../mockData";
 import Grid from "./components/grid/grid";
 import { FrontPageStyled, FPModal } from "./frontpage.style";
-
-export type game = Omit<ThumbnailProps, "position" | "isFocus">;
+import * as api from "../../api/api";
+import { game } from "../../contexts/appState";
 
 const FrontPage: React.FC = () => {
-  const { loadGrid, gridState, handleModal, isModalOpen } = useAppState();
+  const { loadGrid, gridState, handleModal, isModalOpen, loadData, dataArray } =
+    useAppState();
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadGrid(testArray);
-  }, []);
+  const fetchData = async () => {
+    const { games, error } = await api.fetch();
 
-  const generateItems = (array: game[]): JSX.Element[] => {
-    if (!gridState[0]) return [<div key={0}></div>];
+    if (error) {
+      console.log(error);
+      return;
+    }
 
-    return array.map((game, idx) => {
-      const { title, imageURL } = game;
-      return (
-        <Thumbnail
-          title={title}
-          imageURL={imageURL}
-          isFocus={gridState[idx].isFocus}
-          position={gridState[idx].position}
-        />
-      );
+    if (games === null) {
+      console.log(error);
+      return;
+    }
+
+    console.log(games);
+
+    const array: game[] = games.map((el) => {
+      return { ...el };
     });
+
+    loadGrid(array);
+    loadData(array);
+    return;
   };
 
-  const memoItems = useMemo(() => generateItems(testArray), [gridState]);
+  useEffect(() => {
+    fetchData();
+    setLoading(false);
+  }, []);
+
+  if (loading) {
+    return (
+      <FrontPageStyled>
+        <h1>Carregando</h1>
+      </FrontPageStyled>
+    );
+  }
 
   return (
     <>
       <FrontPageStyled>
-        <Grid>{memoItems}</Grid>
+        <Grid items={dataArray} />
         <FPModal isOpen={isModalOpen}>
           <GameDetails gameId={0} />
         </FPModal>

@@ -69,12 +69,19 @@ const ThumbnailDropStyled = styled.div<ThumbnailStyledProps>`
   }
 `;
 
-const ThumbNailTitleStyled = styled.div<ThumbnailStyledProps>`
+const ThumbNailTitleStyled = styled.div<{
+  isFocus: boolean;
+  isModalOpen: boolean;
+}>`
   display: flex;
   padding: 0.5em;
   width: 100%;
   height: 100%;
   position: absolute;
+  transition: 0.2s;
+  transition-timing-function: ease-in-out;
+  opacity: ${(props) => (props.isModalOpen ? `0` : `1`)};
+  mix-blend-mode: initial;
 
   h1:first-of-type {
     width: 100%;
@@ -82,7 +89,7 @@ const ThumbNailTitleStyled = styled.div<ThumbnailStyledProps>`
     font-weight: bolder;
     bottom: 0.5em;
     left: -0.1em;
-    font-size: clamp(0.2rem, 3.5vw, 2rem);
+    font-size: 1.5vw;
     z-index: 10;
     transition: 0.2s;
     opacity: ${(props) => (props.isFocus ? `1` : `0`)};
@@ -94,16 +101,25 @@ const ThumbNailTitleStyled = styled.div<ThumbnailStyledProps>`
   h1:last-of-type {
     width: 100%;
     position: absolute;
-    bottom: 0.75em;
+    bottom: 0.8em;
     left: -0.1em;
-    color: #c21f50bf;
+    color: #c21f50;
     text-align: center;
-    opacity: 0.75;
-    font-size: clamp(0.2rem, 3.5vw, 2rem);
+    font-size: 1.5vw;
     z-index: 5;
     transition: 0.4s;
     transform: ${(props) => (props.isFocus ? `scaleX(1)` : `scaleX(0)`)};
     transition-timing-function: ease-in-out;
+  }
+
+  @media (max-width: 980px) {
+    h1:first-of-type {
+      font-size: 3vw;
+    }
+
+    h1:last-of-type {
+      font-size: 3vw;
+    }
   }
 
   @media (max-width: 600px) {

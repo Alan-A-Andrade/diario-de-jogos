@@ -16,6 +16,10 @@ const FPModal = styled.div<Props>`
   position: fixed;
   right: ${(props) => (props.isOpen ? 0 : `-100vw`)};
   transition: 0.5s;
+
+  @media only screen and (max-width: 600px) {
+    width: 65vw;
+  }
 `;
 
 export { FrontPageStyled, FPModal };

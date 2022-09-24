@@ -1,6 +1,4 @@
-import { game } from "./features/frontpage/frontpage";
-
-export const testArray: game[] = [
+export const testArray = [
   {
     title: "Final Fantasy 7 Remake",
     imageURL:

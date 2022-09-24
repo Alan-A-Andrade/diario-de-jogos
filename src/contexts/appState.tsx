@@ -1,10 +1,27 @@
 import React, { useState, createContext } from "react";
+import { consoles } from "../features/consoleIcon/ConsoleIcon";
 
 import { ThumbnailProps } from "../features/frontpage/components/thumbnail/thumbnail";
 
-export interface GridState {
-  [k: string]: ThumbnailProps;
+export interface game {
+  id: number;
+  text: string;
+  title: string;
+  thumbnailpicture: string;
+  date: Date;
+  console: consoles;
+  datePlayed: Date;
 }
+
+export interface GridState {
+  [k: string]: GridStateItem;
+}
+
+export interface GridStateItem extends game {
+  isFocus: boolean;
+  position: number;
+}
+
 export type AppContextType = {
   gridState: GridState;
   loadGrid: (data: any[]) => void;
@@ -13,9 +30,9 @@ export type AppContextType = {
   isModalOpen: boolean;
   handleModal: () => void;
   itemFocus: number | null;
+  dataArray: game[];
+  loadData: (data: any[]) => void;
 };
-
-type game = Omit<ThumbnailProps, "position" | "isFocus">;
 
 export const AppContext = createContext<AppContextType | null>(null);
 
@@ -29,17 +46,34 @@ const ContextProvider: React.FC<ContextProviderProps> = ({
   const [gridState, setGridState] = useState<GridState>({});
   const [itemFocus, setItemFocus] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [dataArray, setDataArray] = useState<game[]>([]);
 
   const loadGrid = (data: any[]) => {
-    const newState = data.reduce((acc: GridState, game: game, idx) => {
-      const { title, imageURL } = game;
+    const newState = data.reduce((acc: GridState, game: game) => {
+      const { id, text, title, thumbnailpicture, date, console, datePlayed } =
+        game;
+
       return {
         ...acc,
-        [idx]: { ...acc[idx], title, imageURL, position: idx, isFocus: false },
+        [id]: {
+          ...acc[id],
+          date,
+          title,
+          text,
+          thumbnailpicture,
+          position: id,
+          isFocus: false,
+          console,
+          datePlayed,
+        },
       };
     }, {});
 
     setGridState(newState);
+  };
+
+  const loadData = (data: any) => {
+    setDataArray(data);
   };
 
   const handOutFocus = () => {
@@ -96,6 +130,8 @@ const ContextProvider: React.FC<ContextProviderProps> = ({
         isModalOpen,
         handleModal,
         itemFocus,
+        dataArray,
+        loadData,
       }}
     >
       {children}
