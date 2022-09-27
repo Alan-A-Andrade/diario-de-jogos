@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import useAppState from "../../../../hooks/useContext";
 import {
   GameDetailsConsoleIcon,
@@ -14,12 +14,24 @@ export type GameDetailsProps = {
 };
 const GameDetails: React.FC<GameDetailsProps> = () => {
   const { itemFocus, gridState } = useAppState();
+  const [lastItem, setLastItem] = useState<number | null>(null);
 
-  if (itemFocus === null)
+  useEffect(() => {
+    if (itemFocus === null && lastItem === null) {
+      setLastItem(null);
+      return;
+    }
+    if (itemFocus === null && lastItem !== null) {
+      return;
+    }
+    setLastItem(itemFocus);
+  }, [itemFocus]);
+
+  if (lastItem === null)
     return <GameDetailsStyled>Selecione um jogo</GameDetailsStyled>;
 
   const { title, thumbnailpicture, text, date, console, datePlayed } =
-    gridState[itemFocus];
+    gridState[lastItem];
 
   const highlight = (text: string) => {
     const number = text.length;

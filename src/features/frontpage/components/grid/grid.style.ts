@@ -7,7 +7,7 @@ export interface GridStyledProps {
 const GridStyled = styled.div<GridStyledProps>`
   width: ${(props) => (props.isModalOpen ? `50%` : `100%`)};
   height: 100%;
-  padding: 2em;
+  padding: 6em 2em;
   display: flex;
   flex-wrap: wrap;
   gap: 2vw;
@@ -18,7 +18,7 @@ const GridStyled = styled.div<GridStyledProps>`
   @media only screen and (max-width: 600px) {
     width: ${(props) => (props.isModalOpen ? `35%` : `100%`)};
     gap: 2em;
-    padding: 1em;
+    padding: 6em 1em;
   }
 `;
 

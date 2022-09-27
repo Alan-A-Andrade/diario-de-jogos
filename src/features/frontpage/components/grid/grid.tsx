@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useState, useEffect, Fragment } from "react";
 import { game } from "../../../../contexts/appState";
 import useAppState from "../../../../hooks/useContext";
 import Thumbnail from "../thumbnail/thumbnail";
@@ -19,13 +19,21 @@ interface groupByInterface {
 }
 
 const Grid: React.FC<Props> = ({ items }) => {
-  const { handleFocusItem, isModalOpen, handleModal, itemFocus, gridState } =
-    useAppState();
+  const {
+    handleFocusItem,
+    isModalOpen,
+    handleModal,
+    itemFocus,
+    gridState,
+    searchBarValue,
+    setFilteredItems,
+    filteredItems,
+  } = useAppState();
 
   const groupByYear = (array: game[]) => {
     const groupedByYear: groupByInterface = array.reduce(
       (acc: groupByInterface, game) => {
-        const year = game.date.toString().split("-")[0];
+        const year = game.datePlayed.toString().split("-")[0];
 
         if (!acc[year]) {
           acc[year] = [game];
@@ -41,71 +49,64 @@ const Grid: React.FC<Props> = ({ items }) => {
     return groupedByYear;
   };
 
-  const grouped = groupByYear(items);
+  useEffect(() => {
+    const newFilter = items.filter((el) => {
+      const input = searchBarValue.toLowerCase();
+      const title = el.title.toLowerCase();
+      const year = el.datePlayed.toString().split("-")[0].toLowerCase();
+      const console = el.console.toLowerCase();
+
+      return (
+        title.includes(input) || year.includes(input) || console.includes(input)
+      );
+    });
+
+    setFilteredItems(newFilter);
+  }, [items, searchBarValue]);
+
+  const grouped = useMemo(() => groupByYear(filteredItems), [filteredItems]);
 
   return (
     <GridStyled isModalOpen={isModalOpen}>
       {Object.keys(grouped)
         .sort((a: string, b: string) => parseInt(b) - parseInt(a))
-        .map((year) => {
+        .map((year, idx) => {
           return (
-            <>
-              <GridDiv>
+            <Fragment key={`frag_${idx}`}>
+              <GridDiv key={`year_${year}`}>
                 <div />
                 <h1>{year}</h1>
                 <div />
               </GridDiv>
-              {grouped[year].map((game) => (
-                <GridItemStyled key={`${game.id}_game`}>
-                  <GridButtonStyled
-                    isFocused={game.id === itemFocus}
-                    onClick={handleModal}
-                  >
-                    {isModalOpen ? "-" : "+"}
-                  </GridButtonStyled>
-                  <div onClick={() => handleFocusItem(game.id)}>
-                    <Thumbnail
-                      title={game.title}
-                      imageURL={game.thumbnailpicture}
-                      isFocus={gridState[game.id].isFocus}
-                      position={gridState[game.id].position}
-                    />
-                  </div>
-                </GridItemStyled>
-              ))}
-            </>
+              {grouped[year]
+                .sort(
+                  (a, b) =>
+                    new Date(b.datePlayed).getTime() -
+                    new Date(a.datePlayed).getTime()
+                )
+                .map((game) => (
+                  <GridItemStyled key={`${game.id}_game`}>
+                    <GridButtonStyled
+                      isFocused={game.id === itemFocus}
+                      onClick={handleModal}
+                    >
+                      {isModalOpen ? "-" : "+"}
+                    </GridButtonStyled>
+                    <div onClick={() => handleFocusItem(game.id)}>
+                      <Thumbnail
+                        title={game.title}
+                        imageURL={game.thumbnailpicture}
+                        isFocus={gridState[game.id].isFocus}
+                        position={gridState[game.id].position}
+                      />
+                    </div>
+                  </GridItemStyled>
+                ))}
+            </Fragment>
           );
         })}
-      {/* {items.map((el) => {
-        return (
-          <GridItemStyled key={`${el.id}_game`}>
-            <GridButtonStyled
-              isFocused={el.id === itemFocus}
-              onClick={handleModal}
-            >
-              {isModalOpen ? "-" : "+"}
-            </GridButtonStyled>
-            <div onClick={() => handleFocusItem(el.id)}>
-              <Thumbnail
-                title={el.title}
-                imageURL={el.thumbnailpicture}
-                isFocus={gridState[el.id].isFocus}
-                position={gridState[el.id].position}
-              />
-            </div>
-          </GridItemStyled>
-        );
-      })} */}
     </GridStyled>
   );
 };
-
-/* {idx % 5 === 0 && (
-              <GridDiv>
-                <div />
-                <h1>2021</h1>
-                <div />
-              </GridDiv>
-            )} */
 
 export default Grid;

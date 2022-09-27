@@ -32,6 +32,10 @@ export type AppContextType = {
   itemFocus: number | null;
   dataArray: game[];
   loadData: (data: any[]) => void;
+  searchBarValue: string;
+  filteredItems: game[];
+  setSearchBarValue: React.Dispatch<React.SetStateAction<string>>;
+  setFilteredItems: React.Dispatch<React.SetStateAction<game[]>>;
 };
 
 export const AppContext = createContext<AppContextType | null>(null);
@@ -47,6 +51,9 @@ const ContextProvider: React.FC<ContextProviderProps> = ({
   const [itemFocus, setItemFocus] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [dataArray, setDataArray] = useState<game[]>([]);
+
+  const [searchBarValue, setSearchBarValue] = useState<string>("");
+  const [filteredItems, setFilteredItems] = useState<game[]>([]);
 
   const loadGrid = (data: any[]) => {
     const newState = data.reduce((acc: GridState, game: game) => {
@@ -132,6 +139,10 @@ const ContextProvider: React.FC<ContextProviderProps> = ({
         itemFocus,
         dataArray,
         loadData,
+        searchBarValue,
+        filteredItems,
+        setSearchBarValue,
+        setFilteredItems,
       }}
     >
       {children}

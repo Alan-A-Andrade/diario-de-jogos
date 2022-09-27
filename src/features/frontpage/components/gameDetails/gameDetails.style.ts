@@ -32,6 +32,7 @@ const GameDetailsConsoleIcon = styled.div`
   padding: 0.5em;
   gap: 1em;
   width: 100%;
+  height: 4vw;
   padding: 0.5em;
   h1 {
     font-weight: bolder;
@@ -42,6 +43,7 @@ const GameDetailsConsoleIcon = styled.div`
   }
 
   @media (max-width: 980px) {
+    height: 6vw;
     h1 {
       font-size: 3vw;
     }
@@ -51,6 +53,8 @@ const GameDetailsConsoleIcon = styled.div`
   }
 
   @media (max-width: 600px) {
+    height: 12vw;
+
     h1 {
       font-size: 6vw;
     }
